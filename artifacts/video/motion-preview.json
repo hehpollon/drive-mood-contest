@@ -1,0 +1,9 @@
+{
+  "app_version": "0.4.4",
+  "source": ".tools/video-recordings/take-06-route/drive-mood-raw.mp4",
+  "source_start_seconds": 16.900000000000002,
+  "duration_seconds": 14,
+  "playback_rate": 1,
+  "classification": "STEADY throughout retained footage",
+  "note": "Actual app demo with refreshed arrival card. Only app-window crop and scale; no synthetic UI or motion added."
+}

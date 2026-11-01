@@ -1,0 +1,57 @@
+{
+  "app_version": "0.4.4",
+  "build": {
+    "pleosDebug": "PASS",
+    "demoDebug": "PASS",
+    "pleosDebugAndroidTest": "PASS"
+  },
+  "unit_tests": {
+    "pleos": 22,
+    "demo": 22
+  },
+  "lint": {
+    "errors_per_variant": 0,
+    "existing_warnings_per_variant": 13
+  },
+  "runtime": {
+    "route_ui": {
+      "result": "PASS",
+      "checks": 40
+    },
+    "existing_ui": {
+      "result": "PASS",
+      "checks": 48
+    }
+  },
+  "route_cases": [
+    "day",
+    "night",
+    "long destination",
+    "missing data",
+    "negative data",
+    "less than 1km",
+    "narrow",
+    "narrow and short",
+    "short"
+  ],
+  "contrast": {
+    "day/title": 9.54,
+    "day/secondary": 5.19,
+    "day/time": 5.78,
+    "day/metric": 5.94,
+    "night/title": 8.57,
+    "night/secondary": 5.6,
+    "night/time": 6.4,
+    "night/metric": 6.59
+  },
+  "eta": "Device clock plus nonnegative remaining seconds; estimate, refreshed every 15 seconds",
+  "scope": "Pleos emulator rendering and UI fixtures; physical vehicle and gaze performance not tested",
+  "validated_at": "2026-10-29",
+  "summary_saved_at": "2026-11-01",
+  "local_detail_logs": [
+    ".tools/logs/route-card-build.txt",
+    ".tools/logs/route-card-runtime.txt",
+    ".tools/logs/route-card-existing-ui.txt"
+  ],
+  "media_verification": "../video/verification.json"
+}

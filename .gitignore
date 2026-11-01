@@ -1,0 +1,24 @@
+# Local toolchain, caches, and machine settings
+.tools/
+.gradle/
+.kotlin/
+.idea/
+local.properties
+**/build/
+*.iml
+.DS_Store
+__pycache__/
+*.pyc
+
+# Local SDK bundles and signing material
+app/libs/*.aar
+app/libs/*.jar
+*.jks
+*.keystore
+keystore.properties
+secrets.properties
+.env
+.env.*
+
+# Build outputs are generated locally; release APKs are added intentionally.
+apk/*debug*.apk

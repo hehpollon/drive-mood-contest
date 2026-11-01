@@ -1,0 +1,11 @@
+<resources>
+    <style name="Theme.DriveMood" parent="android:style/Theme.Material.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+        <item name="android:statusBarColor">#F6F3EB</item>
+        <item name="android:navigationBarColor">#F6F3EB</item>
+        <item name="android:windowBackground">#F6F3EB</item>
+        <item name="android:windowActionModeOverlay">true</item>
+    </style>
+</resources>

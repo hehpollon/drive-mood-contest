@@ -1,0 +1,183 @@
+{
+  "source": ".tools/video-recordings/take-06-route/drive-mood-raw.mp4",
+  "capture_meta": ".tools/video-recordings/take-06-route/scenes.json",
+  "app_version": "0.4.4",
+  "app_crop": [
+    854,
+    90,
+    1680,
+    1210
+  ],
+  "timeline": [
+    {
+      "name": "intro",
+      "output_start": 0.0,
+      "duration": 6,
+      "original_title_card": true
+    },
+    {
+      "name": "home",
+      "source_start": 1.457,
+      "duration": 6.5,
+      "kicker": "01 / 출발 전",
+      "title": "나의 속도로,\n오늘의 길을",
+      "body": "상황에 맞는 인사\n이번·직전 여정의 리듬 요약",
+      "caption": "차량의 움직임을 리듬으로 읽는 인카 동반자, Drive Mood입니다.",
+      "playback_rate": 1,
+      "output_start": 6.0
+    },
+    {
+      "name": "chooser",
+      "source_start": 9.594,
+      "duration": 1.5,
+      "kicker": "01 / 시연 시작",
+      "title": "주차한 상태에서\n여정 시작",
+      "body": "현재 앱의 시연 기능으로\n핵심 흐름을 재현합니다.",
+      "caption": "주차 상태에서 앱의 여정 시연을 시작합니다.",
+      "playback_rate": 1,
+      "output_start": 12.5
+    },
+    {
+      "name": "steady",
+      "source_start": 16.8,
+      "duration": 8.0,
+      "kicker": "02 / 운전 리듬",
+      "title": "작은 움직임을\n리듬으로",
+      "body": "조향·브레이크 패턴\n잔잔하게 움직이는 리듬 그림",
+      "caption": "큰 상태와 잔잔한 리듬 그림을 함께 표시합니다. 그림의 움직임은 센서 측정값이 아닙니다.",
+      "playback_rate": 1,
+      "output_start": 14.0
+    },
+    {
+      "name": "changed",
+      "source_start": 36.063,
+      "duration": 8.0,
+      "kicker": "03 / 변화 관찰",
+      "title": "변화가 이어지면\n짧은 제안",
+      "body": "관찰된 신호의 변화\n안전하게 주차한 뒤 쉬어가기",
+      "caption": "조향 변화가 이어지면 주차 후 잠깐 쉬어가도록 제안합니다.",
+      "playback_rate": 1,
+      "output_start": 22.0
+    },
+    {
+      "name": "parked",
+      "source_start": 45.651,
+      "duration": 3.2,
+      "kicker": "04 / 주차 후",
+      "title": "차를 세운 뒤,\n나를 위한 30초",
+      "body": "주차가 확인되면\n숨 고르기를 시작할 수 있어요.",
+      "caption": "호흡 가이드는 주차 상태에서만 시작할 수 있습니다.",
+      "playback_rate": 1,
+      "output_start": 30.0
+    },
+    {
+      "name": "breathing-1",
+      "source_start": 49.82,
+      "duration": 9.5,
+      "kicker": "05 / 30초 숨 고르기",
+      "title": "들이쉬고,\n편안하게 내쉬고",
+      "body": "30초 호흡 과정 연속 시연\n현재 실내와 제안 상태 비교",
+      "caption": "3초 들숨과 3초 날숨을 다섯 번, 편안한 만큼 호흡합니다.",
+      "playback_rate": 1,
+      "output_start": 33.2
+    },
+    {
+      "name": "breathing-2",
+      "source_start": 59.32,
+      "duration": 10.0,
+      "kicker": "05 / 30초 숨 고르기",
+      "title": "들이쉬고,\n편안하게 내쉬고",
+      "body": "30초 호흡 과정 연속 시연\n현재 실내와 제안 상태 비교",
+      "caption": "실선은 관찰된 시연 조향, 점선은 호흡 가이드입니다.",
+      "playback_rate": 1,
+      "output_start": 42.7
+    },
+    {
+      "name": "breathing-3",
+      "source_start": 69.32,
+      "duration": 10.833333333333334,
+      "kicker": "05 / 30초 숨 고르기",
+      "title": "들이쉬고,\n편안하게 내쉬고",
+      "body": "30초 호흡 과정 연속 시연\n현재 실내와 제안 상태 비교",
+      "caption": "실내 온도와 빛은 제안이며, 차량 설정을 자동 변경하지 않습니다.",
+      "playback_rate": 1,
+      "output_start": 52.7
+    },
+    {
+      "name": "complete",
+      "source_start": 80.05,
+      "duration": 2.6,
+      "kicker": "05 / 숨 고르기 완료",
+      "title": "짧은 쉼을\n마쳤어요",
+      "body": "완료한 호흡을 기록하고\n다음 여정을 준비해요.",
+      "caption": "짧은 쉼을 마치고, 다음 여정을 준비합니다.",
+      "playback_rate": 1,
+      "output_start": 63.53333333333334
+    },
+    {
+      "name": "aftercare",
+      "source_start": 83.644,
+      "duration": 3.0,
+      "kicker": "06 / 여정 계속",
+      "title": "여정은 계속,\n나의 속도로",
+      "body": "주차 중 여정 요약\n분석된 구간을 명확히 표시",
+      "caption": "현재 여정의 기록과 분석한 구간을 확인합니다.",
+      "playback_rate": 1,
+      "output_start": 66.13333333333334
+    },
+    {
+      "name": "nextdrive",
+      "source_start": 96.609,
+      "duration": 8.0,
+      "kicker": "06 / 새로운 관찰",
+      "title": "다음 주행을\n새롭게 관찰",
+      "body": "새 차량 신호로 리듬 갱신\n호흡 자체로 점수를 바꾸지 않아요.",
+      "caption": "다음 주행의 새 신호로 리듬을 다시 살펴봅니다.",
+      "playback_rate": 1,
+      "output_start": 69.13333333333334
+    },
+    {
+      "name": "report",
+      "source_start": 122.049,
+      "duration": 7.0,
+      "kicker": "07 / 도착 리포트",
+      "title": "오늘의 길을\n한눈에",
+      "body": "주행 시간 · 리듬 변화\n분석 범위 · 숨 고르기 기록",
+      "caption": "여정을 마치면 관찰한 구간과 함께 리듬을 남깁니다.",
+      "playback_rate": 1,
+      "output_start": 77.13333333333334
+    },
+    {
+      "name": "details",
+      "source_start": 129.956,
+      "duration": 4.0,
+      "kicker": "07 / 기록의 근거",
+      "title": "관찰한 만큼,\n분명한 요약",
+      "body": "분석 구간과 주행 시간 구분\n여정의 리듬 변화 확인",
+      "caption": "분석한 구간과 주행 시간을 함께 보여줍니다.",
+      "playback_rate": 1,
+      "output_start": 84.13333333333334
+    },
+    {
+      "name": "history",
+      "source_start": 135.614,
+      "duration": 6.0,
+      "kicker": "08 / 지난 여정",
+      "title": "지난 여정도,\n다시 살펴봐요",
+      "body": "기기 안에 남기는 여정 기록\n시연 기록은 별도로 구분",
+      "caption": "지난 여정을 다시 확인하고, 시연 기록은 따로 구분합니다.",
+      "playback_rate": 1,
+      "output_start": 88.13333333333334
+    },
+    {
+      "name": "outro",
+      "output_start": 94.13333333333334,
+      "duration": 6,
+      "original_title_card": true
+    }
+  ],
+  "output_duration": 100.13333333333334,
+  "audio": "none; Korean captions",
+  "note": "Actual screen recording. Waiting intervals edited; all retained footage plays at normal speed.",
+  "output": "DriveMood_demo_ko_1080p.mp4"
+}

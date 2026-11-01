@@ -1,0 +1,28 @@
+{
+  "status": "PASS",
+  "app_version": "0.4.4",
+  "duration_seconds": 100.133333,
+  "resolution": [
+    1920,
+    1080
+  ],
+  "fps": 30,
+  "format": "H.264 MP4",
+  "audio": "none; burned-in Korean captions",
+  "breathing_continuous_seconds": 30.33,
+  "playback_rate": 1,
+  "decoded_without_errors": true,
+  "recording_flow": "PASS",
+  "source": "Pleos emulator app, built-in demo input",
+  "chapter_review_frames": 16,
+  "motion_preview": {
+    "file": "DriveMood_rhythm_motion_14s.mp4",
+    "duration_seconds": 14.0,
+    "resolution": [
+      1344,
+      968
+    ],
+    "decoded_without_errors": true,
+    "playback_rate": 1
+  }
+}
