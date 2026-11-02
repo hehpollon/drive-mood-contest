@@ -66,6 +66,7 @@ private class PleosVehicleSource(private val context: Context) : VehicleDataSour
                     { fail(session, "brake", it) },
                 )
                 readGearFallback(sdk, session)
+                readPlatformGear(session)
                 if (seconds % 60 == 0 && "time" !in unsupported) sdk.getOdometer().getTripCurrentDrivingTime(
                     { value -> update(session, "time") { it.copy(sdkDrivingMinutes = value) } },
                     { fail(session, "time", it) },
@@ -134,11 +135,30 @@ private class PleosVehicleSource(private val context: Context) : VehicleDataSour
         }, { if (state.value.gear == Gear.UNKNOWN) fail(session, "gear", it) })
     }
 
+    // GEAR_SELECTION is on-change only; polling keeps the 5-second freshness check independent of the deprecated SDK getter.
+    private fun readPlatformGear(session: Int) {
+        val manager = properties ?: return
+        runCatching { manager.getProperty<Any>(VehiclePropertyIds.GEAR_SELECTION, 0) }.onSuccess { onPlatformGear(session, it) }
+    }
+
+    private fun onPlatformGear(session: Int, value: CarPropertyValue<*>) {
+        if (value.status != CarPropertyValue.STATUS_AVAILABLE) return
+        val gear = when (value.value as? Int) {
+            android.car.VehicleGear.GEAR_PARK -> Gear.PARK
+            android.car.VehicleGear.GEAR_DRIVE -> Gear.DRIVE
+            android.car.VehicleGear.GEAR_REVERSE -> Gear.REVERSE
+            android.car.VehicleGear.GEAR_NEUTRAL -> Gear.NEUTRAL
+            else -> Gear.UNKNOWN
+        }
+        update(session, "gear") { it.copy(gear = gear, gearUpdatedAt = now()) }
+    }
+
     private fun connectPlatform(session: Int) {
         try {
             car = Car.createCar(context, Handler(Looper.getMainLooper()), Car.CAR_WAIT_TIMEOUT_DO_NOT_WAIT) { readyCar, ready ->
                 if (session != generation) return@createCar
                 if (!ready) {
+                    properties = null
                     update(session, "ux") { it.copy(uxRestricted = true, gear = Gear.UNKNOWN, gearUpdatedAt = 0) }
                     return@createCar
                 }
@@ -156,16 +176,7 @@ private class PleosVehicleSource(private val context: Context) : VehicleDataSour
                             if (value.status != CarPropertyValue.STATUS_AVAILABLE) return
                             when (value.propertyId) {
                                 VehiclePropertyIds.PERF_VEHICLE_SPEED -> update(session, "speed") { it.copy(speedKph = (value.value as? Float)?.let { speed -> kotlin.math.abs(speed * 3.6f) }) }
-                                VehiclePropertyIds.GEAR_SELECTION -> {
-                                    val gear = when (value.value as? Int) {
-                                        android.car.VehicleGear.GEAR_PARK -> Gear.PARK
-                                        android.car.VehicleGear.GEAR_DRIVE -> Gear.DRIVE
-                                        android.car.VehicleGear.GEAR_REVERSE -> Gear.REVERSE
-                                        android.car.VehicleGear.GEAR_NEUTRAL -> Gear.NEUTRAL
-                                        else -> Gear.UNKNOWN
-                                    }
-                                    update(session, "gear") { it.copy(gear = gear, gearUpdatedAt = now()) }
-                                }
+                                VehiclePropertyIds.GEAR_SELECTION -> onPlatformGear(session, value)
                             }
                         }
                         override fun onErrorEvent(propertyId: Int, areaId: Int) {

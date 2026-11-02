@@ -1,0 +1,55 @@
+{
+  "app_version": "0.4.5",
+  "changes": [
+    "Gear freshness: poll Android GEAR_SELECTION every second alongside the deprecated Pleos SDK gear getter",
+    "Demo journey: block reconnect while recording a demo; distinguish unknown parking state from actual movement in the abort notice",
+    "Parked home route strip: reuse route card rules (meters under 1 km, negative or missing values hidden)",
+    "Planning document: voice guidance is implemented with the device Korean TTS"
+  ],
+  "build": {
+    "pleosDebug": "PASS",
+    "demoDebug": "PASS",
+    "pleosDebugAndroidTest": "PASS"
+  },
+  "unit_tests": {
+    "pleos": 24,
+    "demo": 24
+  },
+  "lint": {
+    "errors_per_variant": 0,
+    "existing_warnings_per_variant": 13
+  },
+  "runtime": {
+    "flow": { "result": "PASS", "checks": 21 },
+    "live": { "result": "PASS", "checks": 18 },
+    "ui": { "result": "PASS", "checks": 48 },
+    "rhythm_ui": { "result": "PASS", "checks": 45 },
+    "route_ui": { "result": "PASS", "checks": 40 },
+    "verify_persistence": {
+      "result": "PASS",
+      "checks": 2,
+      "note": "First run failed on an interrupted demo record from 2026-10-29 kept in device history; the check now targets the latest flow report and passed after flow and force-stop"
+    }
+  },
+  "gear_freshness_experiment": {
+    "sdk_gear_getter_disabled": "Parked home kept 25 seconds after launch (temporary build)",
+    "sdk_and_platform_gear_polls_disabled": "Locked to the connection-waiting driving screen while the vehicle was in P (control, temporary build)",
+    "restored": true
+  },
+  "demo_reconnect_manual_check": "Reconnect during the parked demo scene showed the notice; the demo continued and ended as a normal, non-interrupted report",
+  "scope": "Pleos emulator 2.1.0 and Virtual Console input; physical vehicle, navigation provider arrival, and gaze performance not tested",
+  "validated_at": "2026-11-02",
+  "local_detail_logs": [
+    ".tools/logs/review-fix-2026-11-02.txt",
+    ".tools/logs/runtime-flow.txt",
+    ".tools/logs/runtime-live.txt",
+    ".tools/logs/runtime-ui.txt",
+    ".tools/logs/runtime-rhythm-ui.txt",
+    ".tools/logs/runtime-route-ui.txt",
+    ".tools/logs/runtime-verify-persistence.txt",
+    ".tools/screenshots/exp-a-sdk-gear-off.png",
+    ".tools/screenshots/exp-b-both-gear-polls-off.png",
+    ".tools/screenshots/fix2-5-after-reconnect.png"
+  ],
+  "media_verification": "../video/verification.json (0.4.4 footage)"
+}

@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.TextUnit
 import io.github.hehpollon.drivemood.data.DriveMoodState
+import io.github.hehpollon.drivemood.navigation.RouteSnapshot
 import kotlinx.coroutines.delay
 import java.util.Locale
 
@@ -38,11 +39,9 @@ internal fun RouteSummary(state: DriveMoodState, driving: Boolean, onNavigation:
     val now by produceState(initialValue = System.currentTimeMillis(), key1 = route.active) {
         while (route.active) { value = System.currentTimeMillis(); delay(15_000) }
     }
-    val seconds = route.remainingSeconds?.takeIf { it >= 0 && route.active }
-    val minutes = seconds?.let { (it.toLong() + 59) / 60 }
-    val distance = route.remainingMeters?.takeIf { it >= 0 && route.active }?.let {
-        if (it < 1_000) "$it m" else String.format(Locale.KOREA, "%.1f km", it / 1_000.0)
-    } ?: "확인 중"
+    val seconds = route.confirmedSeconds()
+    val minutes = route.remainingMinutes()
+    val distance = route.distanceText() ?: "확인 중"
     val arrival = seconds?.let { clockTime(now + it.toLong() * 1_000) } ?: "확인 중"
 
     BoxWithConstraints(modifier.fillMaxWidth().background(colors.calm, RoundedCornerShape(40.dp))
@@ -129,6 +128,13 @@ internal fun RouteSummary(state: DriveMoodState, driving: Boolean, onNavigation:
                 secondary = true, modifier = Modifier.fillMaxWidth(), onClick = onNavigation)
         }
     }
+}
+
+/** Route values are shown only while routing; missing or negative values stay unconfirmed. */
+internal fun RouteSnapshot.confirmedSeconds(): Int? = remainingSeconds?.takeIf { it >= 0 && active }
+internal fun RouteSnapshot.remainingMinutes(): Long? = confirmedSeconds()?.let { (it.toLong() + 59) / 60 }
+internal fun RouteSnapshot.distanceText(): String? = remainingMeters?.takeIf { it >= 0 && active }?.let {
+    if (it < 1_000) "$it m" else String.format(Locale.KOREA, "%.1f km", it / 1_000.0)
 }
 
 @Composable

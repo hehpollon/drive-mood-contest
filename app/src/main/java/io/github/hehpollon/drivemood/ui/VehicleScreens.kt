@@ -218,8 +218,8 @@ private fun HomeRouteStrip(state: DriveMoodState, onNavigation: () -> Unit) {
                 if (state.route.active) {
                     Text(state.route.destination?.takeIf { it.isNotBlank() } ?: "목적지 확인 중", fontSize = 28.sp,
                         fontWeight = FontWeight.Medium, maxLines = 1, overflow = TextOverflow.Ellipsis)
-                    Text(listOfNotNull(state.route.remainingSeconds?.let { "${(it + 59) / 60}분 남음" },
-                        state.route.remainingMeters?.let { "%.1f km".format(it / 1000f) }).joinToString(" · ").ifBlank { "경로 정보를 확인하고 있어요" },
+                    Text(listOfNotNull(state.route.remainingMinutes()?.let { "${it}분 남음" },
+                        state.route.distanceText()).joinToString(" · ").ifBlank { "경로 정보를 확인하고 있어요" },
                         fontSize = 24.sp, color = SecondaryTextColor)
                 } else Text(if (state.vehicle.isDemo) "시연에서 가상의 여정을 함께 살펴봐요"
                     else "목적지를 정하면 경로도 함께 보여요", fontSize = 24.sp, color = SecondaryTextColor)

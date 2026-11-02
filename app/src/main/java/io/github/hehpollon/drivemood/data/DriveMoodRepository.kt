@@ -84,6 +84,8 @@ class DriveMoodRepository(private val context: Context) {
 
     fun refreshConnection() {
         if (!state.value.canInteract && state.value.moving) return
+        // Reconnecting clears the actual vehicle state, which would end the demo as if the car had moved.
+        if (replay != null) { notice("시연 기록을 마친 뒤 다시 연결할 수 있어요."); return }
         vehicleSource.stop(); routeSource.stop(); connected = false
         reconcileConnection()
         tick()
@@ -160,7 +162,9 @@ class DriveMoodRepository(private val context: Context) {
         val hardware = vehicleSource.snapshot.value
         // Simulation cannot override the actual vehicle restrictions.
         if (replay != null && !hardware.isParked(now)) {
-            notice("실제 차량의 주차 상태가 해제되어 시연 기록을 중단했어요.")
+            val moved = hardware.gear in setOf(Gear.DRIVE, Gear.REVERSE, Gear.NEUTRAL) || (hardware.speedKph ?: 0f) >= .5f
+            notice(if (moved) "실제 차량의 주차 상태가 해제되어 시연 기록을 중단했어요."
+                else "실제 차량의 주차 상태를 확인할 수 없어 시연 기록을 중단했어요.")
             finishTrip(interrupted = true); return
         }
         val vehicle = replay?.vehicle(now) ?: hardware

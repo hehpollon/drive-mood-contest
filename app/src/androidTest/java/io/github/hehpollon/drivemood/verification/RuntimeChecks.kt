@@ -46,7 +46,9 @@ class RuntimeChecks : Instrumentation() {
                 "verify-persistence" -> {
                     launch()
                     until("saved reports survive process restart") { repository.ui.value.records.any { it.isDemo && it.breathingCount == 1 } }
-                    check(repository.ui.value.records.none { it.isDemo && it.interrupted && it.breathingCount == 1 })
+                    // Only the latest flow report matters; older interrupted records stay in device history.
+                    val latest = repository.ui.value.records.filter { it.isDemo && it.breathingCount == 1 }.maxBy { it.endedAt }
+                    check(!latest.interrupted) { "Restart turned the latest report into an interrupted record: $latest" }
                 }
             }
             result.putString("screen", snapshot())
