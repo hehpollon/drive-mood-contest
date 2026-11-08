@@ -13,8 +13,8 @@ android {
         applicationId = "io.github.hehpollon.drivemood"
         minSdk = 28
         targetSdk = 34
-        versionCode = 11
-        versionName = "0.4.5"
+        versionCode = 12
+        versionName = "0.4.6"
         testInstrumentationRunner = "io.github.hehpollon.drivemood.verification.RuntimeChecks"
     }
 
@@ -67,5 +67,6 @@ dependencies {
 
     "pleosImplementation"(libs.pleos.vehicle)
     "pleosImplementation"(libs.pleos.navihelper)
+    "pleosImplementation"(libs.pleos.tts)
     testImplementation("junit:junit:4.13.2")
 }

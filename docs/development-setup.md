@@ -111,7 +111,7 @@ AVD 이름은 `DriveMood_Pleos`이다. 설치된 시스템 이미지의 `devices
 - NaviHelper 목적지·경로·TBT 구독, 기본 내비 전면 요청, 도착 이벤트 처리
 - 사용자가 기록을 시작하면 포그라운드 서비스로 화면 전환 후에도 수집 유지
 - 기록 중이 아니면서 화면을 나가면 SDK 구독·연결 해제
-- 음성 엔진이 제공되는 경우 한국어 안내와 일시적 오디오 포커스 사용
+- Pleos TextToSpeech SDK(온디바이스)로 한국어 안내. 차량 음성 서비스가 재생하며, Pleos 음성이 없으면 기기 TTS(일시적 오디오 포커스 사용), 그것도 없으면 화면 안내
 
 첫 기록 시작 때 차량 속도와 알림 권한을 요청한다. 이 Pleos 이미지에서는 `CAR_SPEED` 권한이 위치 관련 권한 창으로 표시된다. 거절해도 다른 사용 가능한 SDK 값은 계속 표시하지만 속도 기반 저속 제외는 적용할 수 없다. `연결 → 권한 확인`에서 다시 요청할 수 있다.
 
@@ -294,3 +294,7 @@ adb shell am instrument --user current -w -e action verify-persistence \
 0.4.5에서는 전체 검토에서 찾은 실차 대비 문제를 고쳤다. 기어(`GEAR_SELECTION`)는 바뀔 때만 알려주는 속성이라 5초 재확인이 지원 종료 예정인 SDK 기어 조회에만 의존했다. 이제 Android 차량 속성도 1초마다 직접 읽는다. 임시 빌드로 SDK 기어 조회를 끄면 주차 홈이 유지되고, 두 조회를 모두 끄면 P 상태에서도 '연결 확인 중' 화면으로 잠기는 것을 에뮬레이터에서 확인한 뒤 코드를 원래대로 되돌렸다. 시연 기록 중의 '다시 연결'·'권한 확인'은 실제 차량 상태를 초기화해 시연을 중단 기록으로 끝냈으므로 안내만 표시하고, 시연 중단 안내는 주차 해제와 주차 확인 불가를 구분한다. 주차 홈 경로 줄은 경로 카드와 같은 표기 규칙을 쓴다.
 
 두 변형 빌드·단위 테스트 각 24개·lint 오류 0개(기존 경고 각 13개), 에뮬레이터 `flow` 21개·`live` 18개·`ui` 48개·`rhythm-ui` 45개·`route-ui` 40개·`verify-persistence` 2개를 확인했다. `verify-persistence`는 처음에 2026-10-29의 중단된 시연 기록이 기기 이력에 남아 실패했으므로, 검사를 직전 `flow` 리포트 기준으로 좁힌 뒤 `flow` → 강제 종료 → `verify-persistence` 순서로 다시 실행해 통과했다. 시연 중 '다시 연결'은 에뮬레이터에서 직접 눌러 안내 표시와 시연 유지, 정상 도착 리포트를 확인했다. 요약은 `artifacts/validation/0.4.5.json`에 있다.
+
+0.4.6에서는 Pleos 빌드의 음성 안내를 Pleos TextToSpeech SDK 3.3.1로 옮겼다(`data/PleosVoiceGuide.kt`). 온디바이스(`ON_DEVICE`) 모드라 네트워크와 Pleos Playground 앱 인증 정보가 필요 없고, Manifest의 `pleos.car.permission.TTS_SERVICE` 선언만 쓴다. SDK는 `initialize()`가 끝난 뒤에만 `addEventListener()`를 받으므로 초기화 성공 콜백에서 리스너와 `Locale.KOREA`를 설정한다(순서가 바뀌면 앱이 종료되는 것을 확인했다). 초기화·언어 설정에 실패하면 기기 TTS로, 그것도 없으면 화면 안내로 대체한다. 의존성 `ai.pleos.playground.security:universal-access`를 받기 위해 `settings.gradle.kts`의 Pleos 저장소 필터에 해당 그룹을 추가했다.
+
+에뮬레이터의 음성 서비스는 `ai.pleos.playground.caas` 4.2.10이며 SDK 요구 버전(4.1.29) 이상이다. 30초 호흡에서 11개 문장(들숨·날숨 5회와 완료 문장)의 재생 시작·완료 콜백을 확인했고 오류는 없었다. 에뮬레이터는 `-no-audio`로 실행해 실제 소리는 듣지 않았다. 전체 검사(흐름 21·실제 SDK 18·UI 48·리듬 UI 45·경로 UI 40·저장 복원 2)는 모두 통과했다. 요약은 `artifacts/validation/0.4.6.json`에 있다.

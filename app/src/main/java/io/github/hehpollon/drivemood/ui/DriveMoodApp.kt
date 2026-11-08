@@ -280,7 +280,7 @@ private fun ConnectionScreen(state: DriveMoodState, repository: DriveMoodReposit
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(20.dp)) {
                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text("음성으로 조용히 안내", fontSize = 28.sp)
-                    Text(if (state.voiceAvailable) "기기의 한국어 음성 엔진을 사용해요." else "한국어 음성 엔진이 없으면 화면으로 안내해요.", fontSize = 24.sp, color = SecondaryTextColor)
+                    Text(if (state.voiceAvailable) state.voiceDescription else "한국어 음성 엔진이 없으면 화면으로 안내해요.", fontSize = 24.sp, color = SecondaryTextColor)
                 }
                 Switch(state.voiceEnabled, repository::setVoice, modifier = Modifier.size(80.dp), enabled = state.canInteract)
             }

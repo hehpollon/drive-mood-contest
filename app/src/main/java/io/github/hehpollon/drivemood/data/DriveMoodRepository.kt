@@ -32,6 +32,7 @@ data class DriveMoodState(
     val arrivalReport: TripRecord? = null,
     val voiceEnabled: Boolean = true,
     val voiceAvailable: Boolean = false,
+    val voiceDescription: String = "",
     val notice: String? = null,
 )
 
@@ -41,7 +42,7 @@ class DriveMoodRepository(private val context: Context) {
     private val vehicleSource = createVehicleDataSource(context)
     private val routeSource = createRouteDataSource(context)
     private val store = TripStore(context)
-    private val voice = VoiceGuide(context)
+    private val voice = createVoiceGuide(context)
     private val guide = BreathingGuide()
     private var engine = RhythmEngine()
     private var accumulator: TripAccumulator? = null
@@ -203,7 +204,8 @@ class DriveMoodRepository(private val context: Context) {
         state.value = state.value.copy(vehicle = vehicle, hardware = hardware, route = route, rhythm = reading,
             lastDriving = lastDriving, wave = engine.points, story = story, recording = accumulator != null,
             demo = replay != null, demoScene = replay?.scene ?: DemoScene.JOURNEY,
-            canInteract = canInteract, moving = moving, breathing = breathing, activeTrip = trip, voiceAvailable = voice.available)
+            canInteract = canInteract, moving = moving, breathing = breathing, activeTrip = trip, voiceAvailable = voice.available,
+            voiceDescription = voice.description)
         if (accumulator != null && now - checkpointAt >= 15_000) { checkpointAt = now; checkpoint() }
         // Wait for parking as well as the native navigation arrival event.
         if (pendingArrival && canInteract && vehicle.isParked(now) && !breathing.active) finishTrip()

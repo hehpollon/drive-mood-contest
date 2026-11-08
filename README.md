@@ -10,7 +10,7 @@
 - [시연 영상 대본 및 화면 구성](docs/drive-mood-demo-script.md): 기준 문서를 바탕으로 작성하는 시연 자료
 - [기획 초안](docs/drive-mood-planning-draft.md): 초안 보관용 참고 자료
 - [개발 환경 설정 및 실행](docs/development-setup.md): Android 도구 설치, APK 빌드, Pleos 에뮬레이터 연결
-- [0.4.5 검증 요약](artifacts/validation/0.4.5.json): 빌드·단위 테스트·에뮬레이터 전체 흐름·실제 SDK 입력·UI 검사 결과 ([0.4.4](artifacts/validation/0.4.4.json): 대비 검사 포함)
+- [0.4.6 검증 요약](artifacts/validation/0.4.6.json): 빌드·단위 테스트·Pleos 음성 재생·에뮬레이터 전체 흐름·실제 SDK 입력·UI 검사 결과 ([0.4.5](artifacts/validation/0.4.5.json), [0.4.4](artifacts/validation/0.4.4.json): 대비 검사 포함)
 
 기능, 사용 시나리오, 개발 범위는 전체 버전을 기준으로 관리한다. 문서 간 내용이 다르면 전체 버전을 우선한다.
 
@@ -27,6 +27,7 @@
 ## 기획에서 활용할 API
 - Vehicle State: `CAR_DRIVE`, `CAR_CLIMATE`, `CAR_LIGHTS`, `CAR_SEATS` 등
 - NaviHelper: 경로, 목적지, TBT
+- TextToSpeech: 리듬 변화 제안과 주차 중 호흡 안내 음성 (온디바이스 모드)
 
 ## 기본 구조
 ```
@@ -43,7 +44,7 @@ drive-mood-contest/
     └── (기획서, 대본, 개발 환경 안내)
 ```
 
-## 구현 현황 (0.4.5 · 실차 기어 확인 보강)
+## 구현 현황 (0.4.6 · Pleos 음성 안내)
 
 | 기능 | 구현 |
 | --- | --- |
@@ -54,7 +55,7 @@ drive-mood-contest/
 | 경로 | NaviHelper 연결, 목적지·남은 시간·거리·TBT, 기본 내비 열기, 도착 이벤트 |
 | 리포트 | 기록 시간·분석 범위·리듬 변화·브레이크·호흡 기록, 도착·수동 종료 저장 |
 | 기록 보관 | 기기 내부 최근 60회, 최근 7일 합계, 상세 조회·개별 삭제, 중단 기록 복구 |
-| 음성 | 기기의 한국어 TTS가 설치된 경우 짧은 제안 및 주차 중 호흡 안내 |
+| 음성 | Pleos TextToSpeech SDK(온디바이스)로 짧은 제안 및 주차 중 호흡 안내. Pleos 음성이 없으면 기기 한국어 TTS, 그것도 없으면 화면 안내 |
 | 시연 | 일정·변화·회전·연결 끊김·주차 장면, 시연 표시, 주간 실주행 합계 제외 |
 | 주행 중 제한 | 주행·주차 화면 분리, AAOS 제한·실제 기어 확인, 주차 후 기능 복귀 |
 
@@ -79,6 +80,8 @@ drive-mood-contest/
 0.4.4의 [경로 카드 미리보기](artifacts/video/DriveMood_route_card.png)는 세이지색 바탕과 목적지 핀, 큰 남은 시간, 거리·도착 예상 시각, 다음 안내로 구성한다. 도착 예상 시각은 기기 현재 시각에 내비의 남은 시간을 더한 추정값이다. 정보가 누락되거나 음수이면 확인 중으로 표시하며, 가까운 거리는 m 단위로 표시한다. 세로 공간이 짧으면 목적지·시간·거리·다음 안내를 우선한다.
 
 0.4.5는 실차 대비 보강이다. 기어는 바뀔 때만 알려주는 차량 속성이라, 5초 재확인을 지원 종료 예정인 SDK 조회에만 맡기지 않고 Android 차량 속성도 1초마다 직접 읽는다. 시연 기록 중에는 '다시 연결'로 실제 차량 상태가 초기화되어 시연이 중단되는 일을 막고, 주차 확인 불가와 실제 주차 해제를 구분해 안내한다. 주차 홈의 경로 줄도 경로 카드와 같은 규칙(1km 미만 m, 음수·누락 미표시)을 쓴다.
+
+0.4.6은 음성 안내를 Pleos TextToSpeech SDK로 옮겼다. 온디바이스(`ON_DEVICE`) 모드라 네트워크와 Pleos Playground 앱 인증 정보(Client ID·Secret)가 필요 없고, `pleos.car.permission.TTS_SERVICE` 권한 선언만 사용한다. 음성은 차량 음성 서비스가 재생한다. Pleos 음성을 쓸 수 없는 환경에서는 기기 한국어 TTS로, 그것도 없으면 화면 안내로 대체한다. `demoDebug`는 일반 Android용이라 기기 TTS를 그대로 쓴다.
 
 앱의 **주행 화면** 버튼으로 주차 상태에서 미리 보거나, 왼쪽 **시연 → 여정 시연**에서 D/P 전환을 확인할 수 있다. 기록을 시작한 뒤 D로 전환하면 주행 요약을 표시하고, P가 확인되면 주차 홈으로 돌아온다.
 
@@ -107,7 +110,7 @@ Android Studio는 `./scripts/studio.sh`로 연다. 최초 설치 및 에뮬레�
 - 최소 Android API 28, 컴파일 API 36, 타깃 API 34 (Pleos Connect 2.1.0 실행 환경)
 - Java 21 실행 환경, Java/Kotlin 바이트코드 타깃 17
 - Gradle 8.13 / Android Gradle Plugin 8.11.1 / Kotlin 2.2.21
-- Vehicle SDK 2.3.2 / NaviHelper SDK 3.0.5
+- Vehicle SDK 2.3.2 / NaviHelper SDK 3.0.5 / TextToSpeech SDK 3.3.1
 - Pleos Connect Emulator 2.1.0 (Android API 34), 전용 기기 프로필 2560×1440 / 160dpi
 
 ## 검증
@@ -127,8 +130,8 @@ Android Studio는 `./scripts/studio.sh`로 연다. 최초 설치 및 에뮬레�
 
 ## 다음 세션에서 이어가기
 
-- 현재 버전은 **0.4.5**이며, 기능·범위의 기준은 `docs/drive-mood-planning-full.md`다. 직전 작업은 전체 검토 후의 실차 대비 보강(기어 재확인, 시연 중 재연결 차단, 홈 경로 줄 표기)이다. 화면 구성은 0.4.4와 같으며 시연 영상도 0.4.4 화면이다.
-- 직전 검증(2026-11-02): 두 변형 빌드, 단위 테스트 각 24개, lint 오류 0개·기존 경고 각 13개, 에뮬레이터 전체 흐름 21개·실제 SDK 입력 18개·UI 48개·리듬 UI 45개·경로 UI 40개·저장 복원 2개 통과. 결과는 `artifacts/validation/0.4.5.json`에 요약했다. 새로운 세션에서 다시 실행한 결과와 구분한다.
+- 현재 버전은 **0.4.6**이며, 기능·범위의 기준은 `docs/drive-mood-planning-full.md`다. 직전 작업은 공식 설명회(10/28) 내용 반영과 음성 안내의 Pleos TextToSpeech SDK 전환이다. 그 전 0.4.5는 실차 대비 보강(기어 재확인, 시연 중 재연결 차단, 홈 경로 줄 표기)이다. 화면 구성은 0.4.4와 같으며 시연 영상도 0.4.4 화면이다.
+- 직전 검증(2026-11-02, 0.4.6): 두 변형 빌드, 단위 테스트 각 24개, lint 오류 0개(경고 demo 17개·pleos 20개, 늘어난 항목은 라이브러리 새 버전 안내와 TTS SDK 의존성의 16KB 정렬 안내), 에뮬레이터 전체 흐름 21개·실제 SDK 입력 18개·UI 48개·리듬 UI 45개·경로 UI 40개·저장 복원 2개 통과. Pleos 음성은 30초 호흡에서 11개 문장의 재생 시작·완료를 서비스 로그로 확인했다(에뮬레이터 무음 실행이라 귀로 듣지는 않음). 결과는 `artifacts/validation/0.4.6.json`에 요약했다. 새로운 세션에서 다시 실행한 결과와 구분한다.
 - 같은 PC의 `.tools/`에는 도구·캐시·원본 영상·상세 로그가 남아 있으며 Git에는 포함하지 않는다. 다른 PC에서는 `docs/development-setup.md`의 최초 설치 절차를 따른다.
 - 빌드는 `./scripts/gradle.sh :app:assembleDemoDebug :app:assemblePleosDebug`로 진행한다. 에뮬레이터·설치된 앱·기록 상태는 재확인하고, 진행 중인 사용자 기록은 유지한다.
 - 편집 영상·14초 미리보기·화면 캡처는 `artifacts/video/`에 있다. 원본 녹화는 로컬 전용이며 `scripts/record-demo.py`와 `scripts/render-demo.py`로 다시 제작할 수 있다.

@@ -6,6 +6,7 @@ activity = "1.11.0"
 lifecycle = "2.9.4"
 vehicle = "2.3.2"
 navihelper = "3.0.5"
+tts = "3.3.1"
 
 [libraries]
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity" }
@@ -17,6 +18,7 @@ androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling
 androidx-compose-material3 = { module = "androidx.compose.material3:material3" }
 pleos-vehicle = { module = "ai.pleos.playground:Vehicle", version.ref = "vehicle" }
 pleos-navihelper = { module = "ai.pleos.playground:NaviHelper", version.ref = "navihelper" }
+pleos-tts = { module = "ai.pleos.playground:TextToSpeech", version.ref = "tts" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

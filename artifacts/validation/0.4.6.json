@@ -1,0 +1,52 @@
+{
+  "app_version": "0.4.6",
+  "changes": [
+    "Voice guidance in the pleos build uses the Pleos TextToSpeech SDK 3.3.1 in ON_DEVICE mode (no network, no app credentials); falls back to the device Android TTS, then to on-screen guidance",
+    "Manifest declares pleos.car.permission.TTS_SERVICE; the demo build keeps the device Android TTS",
+    "Connection screen names the engine that speaks",
+    "Planning document records the 2026-10-28 official briefing (email subject format, generative AI condition, emulator-only verification, SDK permissions)"
+  ],
+  "build": {
+    "pleosDebug": "PASS",
+    "demoDebug": "PASS",
+    "pleosDebugAndroidTest": "PASS"
+  },
+  "unit_tests": {
+    "pleos": 24,
+    "demo": 24
+  },
+  "lint": {
+    "errors_per_variant": 0,
+    "warnings": { "demoDebug": 17, "pleosDebug": 20 },
+    "new_warnings_note": "3 GradleDependency newer-version notices in both variants; 3 Aligned16KB notices in pleosDebug for x86_64 libjnidispatch.so from net.java.dev.jna:jna 5.13.0, a transitive dependency of the Pleos TextToSpeech SDK"
+  },
+  "pleos_tts_emulator_check": {
+    "speech_service": "ai.pleos.playground.caas 4.2.10 (SDK requires 4.1.29 or later)",
+    "permission": "pleos.car.permission.TTS_SERVICE granted at install",
+    "initialize": "ON_DEVICE initialize succeeded, locale ko_KR, voice seoyoon",
+    "breathing_session": "11 utterances (5 inhale/exhale pairs and the completion message), each with start and done callbacks, no errors",
+    "audio_output": "Emulator ran headless with -no-audio; playback was confirmed from service logs (AudioTrack play), not by listening"
+  },
+  "runtime": {
+    "flow": { "result": "PASS", "checks": 21 },
+    "live": { "result": "PASS", "checks": 18 },
+    "ui": { "result": "PASS", "checks": 48 },
+    "rhythm_ui": { "result": "PASS", "checks": 45 },
+    "route_ui": { "result": "PASS", "checks": 40 },
+    "verify_persistence": { "result": "PASS", "checks": 2 }
+  },
+  "scope": "Pleos emulator 2.1.0 and Virtual Console input; physical vehicle, audible output quality, and gaze performance not tested",
+  "validated_at": "2026-11-02",
+  "local_detail_logs": [
+    ".tools/logs/tts-0.4.6-build.txt",
+    ".tools/logs/tts-0.4.6-lint-offline.txt",
+    ".tools/logs/tts-breathing-logcat.txt",
+    ".tools/logs/runtime-flow.txt",
+    ".tools/logs/runtime-live.txt",
+    ".tools/logs/runtime-ui.txt",
+    ".tools/logs/runtime-rhythm-ui.txt",
+    ".tools/logs/runtime-route-ui.txt",
+    ".tools/logs/runtime-verify-persistence.txt"
+  ],
+  "media_verification": "../video/verification.json (0.4.4 footage, no audio)"
+}
