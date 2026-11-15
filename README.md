@@ -85,7 +85,16 @@ drive-mood-contest/
 
 앱의 **주행 화면** 버튼으로 주차 상태에서 미리 보거나, 왼쪽 **시연 → 여정 시연**에서 D/P 전환을 확인할 수 있다. 기록을 시작한 뒤 D로 전환하면 주행 요약을 표시하고, P가 확인되면 주차 홈으로 돌아온다.
 
-## 실행 방법
+## 제출용 APK (심사용)
+
+- 파일: [`apk/HansangCho_DriveMood_release.apk`](apk/HansangCho_DriveMood_release.apk) · 버전 0.4.6 · release 서명
+- 실행 환경: Pleos Connect Emulator 2.1.0 (Android API 34). 에뮬레이터 설치는 [Pleos 공식 안내](https://document.pleos.ai/docs/connect/guide/getting-started/application-development/setup-connect-sdk-emulator)를 따른다.
+- 설치: 에뮬레이터를 켠 뒤 `adb install apk/HansangCho_DriveMood_release.apk` (같은 패키지의 debug 앱이 설치돼 있으면 먼저 삭제)
+- 사용: 차량을 P(주차) 상태로 두고 **Drive Mood**를 연다. 실제 주행 입력 없이 전체 흐름을 보려면 왼쪽 **시연 → 여정 시연**을 누른다(약 2분: 일정한 리듬 → 리듬 변화 → 주차·30초 숨 고르기 → 다시 주행 → 도착 리포트). 첫 기록 시작 때 차량 속도·알림 권한을 허용한다.
+- 실제 SDK 입력으로 확인하려면 **주행 기록 시작** 후 Pleos Virtual Console(`http://127.0.0.1:8088/`, `./scripts/vehicle-console.sh`)에서 기어·속도·조향·브레이크를 바꾼다.
+- 음성 안내는 Pleos TextToSpeech SDK(온디바이스)로 재생한다. 네트워크와 별도 인증 정보는 필요 없다.
+
+## 실행 방법 (소스 빌드)
 
 설치된 개발 도구로 데모 APK를 빌드한다.
 
@@ -102,6 +111,8 @@ Pleos SDK를 포함한 APK를 빌드한다.
 ```
 
 APK 위치: `app/build/outputs/apk/pleos/debug/app-pleos-debug.apk`
+
+제출용 release APK는 `./scripts/gradle.sh :app:assemblePleosRelease`로 만든다. 서명 정보는 Git에 포함하지 않는 `keystore.properties`(프로젝트 루트)에서 읽으며, 이 파일이 없으면 서명되지 않은 APK가 만들어진다.
 
 Android Studio는 `./scripts/studio.sh`로 연다. 최초 설치 및 에뮬레이터 설정은 [개발 환경 안내](docs/development-setup.md)를 따른다.
 
@@ -120,7 +131,7 @@ Android Studio는 `./scripts/studio.sh`로 연다. 최초 설치 및 에뮬레�
   :app:lintDemoDebug :app:lintPleosDebug
 ```
 
-에뮬레이터 전체 흐름 검증은 [개발 환경 안내](docs/development-setup.md#7-검증-명령)를 참고한다. 두 APK는 개발용 debug 서명이다. 제출용 서명과 실차·제공자별 검증은 별도로 진행한다.
+에뮬레이터 전체 흐름 검증은 [개발 환경 안내](docs/development-setup.md#7-검증-명령)를 참고한다. 소스 빌드의 debug APK는 개발용 서명이다. 제출용 APK는 별도 release 키로 서명했으며 키는 저장소에 포함하지 않는다. 실차·내비 제공자별 검증은 수행하지 않았다.
 
 ## 공모전
 
@@ -135,4 +146,4 @@ Android Studio는 `./scripts/studio.sh`로 연다. 최초 설치 및 에뮬레�
 - 같은 PC의 `.tools/`에는 도구·캐시·원본 영상·상세 로그가 남아 있으며 Git에는 포함하지 않는다. 다른 PC에서는 `docs/development-setup.md`의 최초 설치 절차를 따른다.
 - 빌드는 `./scripts/gradle.sh :app:assembleDemoDebug :app:assemblePleosDebug`로 진행한다. 에뮬레이터·설치된 앱·기록 상태는 재확인하고, 진행 중인 사용자 기록은 유지한다.
 - 편집 영상·14초 미리보기·화면 캡처는 `artifacts/video/`에 있다. 원본 녹화는 로컬 전용이며 `scripts/record-demo.py`와 `scripts/render-demo.py`로 다시 제작할 수 있다.
-- 남은 제출 준비는 공식 접수양식과 사업성 근거, release 서명·설치 검증, 심사 계정 접근과 제출 링크 정리다. 주행 중 반복 움직임의 심사 적합성과 실차 시선 영향은 아직 검증하지 않았다.
+- 제출용 release APK는 `apk/`에 있으며 2026-11-15 에뮬레이터 설치·여정 시연·호흡·도착 리포트를 확인했다. 서명 키는 저장소 밖(`keystore.properties`가 가리키는 위치)에 있다. 남은 일은 접수양식의 개인정보·서명과 이메일 제출이다. 주행 중 반복 움직임의 심사 적합성과 실차 시선 영향은 아직 검증하지 않았다.

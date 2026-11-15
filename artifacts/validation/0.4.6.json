@@ -17,7 +17,10 @@
   },
   "lint": {
     "errors_per_variant": 0,
-    "warnings": { "demoDebug": 17, "pleosDebug": 20 },
+    "warnings": {
+      "demoDebug": 17,
+      "pleosDebug": 20
+    },
     "new_warnings_note": "3 GradleDependency newer-version notices in both variants; 3 Aligned16KB notices in pleosDebug for x86_64 libjnidispatch.so from net.java.dev.jna:jna 5.13.0, a transitive dependency of the Pleos TextToSpeech SDK"
   },
   "pleos_tts_emulator_check": {
@@ -28,12 +31,30 @@
     "audio_output": "Emulator ran headless with -no-audio; playback was confirmed from service logs (AudioTrack play), not by listening"
   },
   "runtime": {
-    "flow": { "result": "PASS", "checks": 21 },
-    "live": { "result": "PASS", "checks": 18 },
-    "ui": { "result": "PASS", "checks": 48 },
-    "rhythm_ui": { "result": "PASS", "checks": 45 },
-    "route_ui": { "result": "PASS", "checks": 40 },
-    "verify_persistence": { "result": "PASS", "checks": 2 }
+    "flow": {
+      "result": "PASS",
+      "checks": 21
+    },
+    "live": {
+      "result": "PASS",
+      "checks": 18
+    },
+    "ui": {
+      "result": "PASS",
+      "checks": 48
+    },
+    "rhythm_ui": {
+      "result": "PASS",
+      "checks": 45
+    },
+    "route_ui": {
+      "result": "PASS",
+      "checks": 40
+    },
+    "verify_persistence": {
+      "result": "PASS",
+      "checks": 2
+    }
   },
   "scope": "Pleos emulator 2.1.0 and Virtual Console input; physical vehicle, audible output quality, and gaze performance not tested",
   "validated_at": "2026-11-02",
@@ -48,5 +69,13 @@
     ".tools/logs/runtime-route-ui.txt",
     ".tools/logs/runtime-verify-persistence.txt"
   ],
-  "media_verification": "../video/verification.json (0.4.4 footage, no audio)"
+  "media_verification": "../video/verification.json (0.4.4 footage, no audio)",
+  "release_apk": {
+    "file": "apk/HansangCho_DriveMood_release.apk",
+    "sha256": "3e5688464dbdd51f0adac05a0ca59cb14fef65c1003783b42d4526b40b656e5f",
+    "signer": "CN=Drive Mood, O=Drive Mood (release key kept outside the repository)",
+    "debuggable": false,
+    "size_bytes": 43188950,
+    "emulator_check_2026_11_15": "Fresh install on Pleos Connect Emulator 2.1.0: speed and notification permission prompts, journey demo (steady, changed, parked), 30-second breathing with 11 Pleos speech utterances started and done, arrival report saved; no crash"
+  }
 }

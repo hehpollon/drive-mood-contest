@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -30,8 +32,22 @@ android {
         }
     }
 
+    // Release signing reads the git-ignored keystore.properties; without it the release APK is unsigned.
+    val releaseKeystore = rootProject.file("keystore.properties").takeIf { it.isFile }?.let { file ->
+        Properties().apply { file.inputStream().use { load(it) } }
+    }
+    signingConfigs {
+        if (releaseKeystore != null) create("release") {
+            storeFile = file(releaseKeystore.getProperty("storeFile"))
+            storePassword = releaseKeystore.getProperty("storePassword")
+            keyAlias = releaseKeystore.getProperty("keyAlias")
+            keyPassword = releaseKeystore.getProperty("keyPassword")
+        }
+    }
+
     buildTypes {
         release {
+            if (releaseKeystore != null) signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
