@@ -88,7 +88,7 @@ drive-mood-contest/
 ## 제출용 APK (심사용)
 
 - 파일: [`apk/HansangCho_DriveMood_release.apk`](apk/HansangCho_DriveMood_release.apk) · 버전 0.4.6 · release 서명
-- 실행 환경: Pleos Connect Emulator 2.1.0 (Android API 34). 에뮬레이터 설치는 [Pleos 공식 안내](https://document.pleos.ai/docs/connect/guide/getting-started/application-development/setup-connect-sdk-emulator)를 따른다.
+- 개발에 사용한 에뮬레이터: Pleos Connect Emulator 2.1.0 (Android API 34, x86_64), 화면 규격 2560×1440 / 160dpi. 에뮬레이터 설치는 [Pleos 공식 안내](https://document.pleos.ai/docs/connect/guide/getting-started/application-development/setup-connect-sdk-emulator)를 따른다.
 - 설치: 에뮬레이터를 켠 뒤 `adb install apk/HansangCho_DriveMood_release.apk` (같은 패키지의 debug 앱이 설치돼 있으면 먼저 삭제)
 - 사용: 차량을 P(주차) 상태로 두고 **Drive Mood**를 연다. 실제 주행 입력 없이 전체 흐름을 보려면 왼쪽 **시연 → 여정 시연**을 누른다(약 2분: 일정한 리듬 → 리듬 변화 → 주차·30초 숨 고르기 → 다시 주행 → 도착 리포트). 첫 기록 시작 때 차량 속도·알림 권한을 허용한다.
 - 실제 SDK 입력으로 확인하려면 **주행 기록 시작** 후 Pleos Virtual Console(`http://127.0.0.1:8088/`, `./scripts/vehicle-console.sh`)에서 기어·속도·조향·브레이크를 바꾼다.
